@@ -2,21 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const dotenv = require('dotenv').config();
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
-const { nextTick } = require('process');
+// const { nextTick } = require('process');
 
-
-mongoose.connect('mongodb+srv://user:sMBguHcJs2ZeHhP@cluster0.uxdfw.mongodb.net/piquante?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.uxdfw.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// app.use((req, res) => {
-//   res.json({ message: 'Votre requête a bien été reçue !' });
-// });
 const app = express();
 
 
