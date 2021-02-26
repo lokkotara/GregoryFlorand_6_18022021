@@ -2,12 +2,12 @@ const express = require('express');
 const helmet = require("helmet");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const mongoSanitize = require('express-mongo-sanitize');
 const path = require('path');
 const dotenv = require('dotenv').config();
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
-// const { nextTick } = require('process');
 
 const app = express();
 app.use(helmet());
@@ -25,8 +25,12 @@ app.use((req, res, next) => {
   next();
 });
 
-
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.use(mongoSanitize({
+  replaceWith: '_'
+}))
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
