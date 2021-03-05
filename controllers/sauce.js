@@ -1,22 +1,24 @@
-const Sauce = require('../models/Sauce');
-const fs = require('fs');
+const Sauce = require('../models/Sauce'); //On importe le modèle de sauce
+const fs = require('fs'); //système de gestion de fichier de Node
 
+//Créer une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  delete sauceObject._id;
+  delete sauceObject._id;//retire l'id généré automatiquement par MongoDb
   const sauce = new Sauce({
-    ...sauceObject,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    ...sauceObject,//Utilise l'opérateur spread pour copier les infos du corps de la requête
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,//On génère l'url par rapport à son nom de fichier
     likes: 0,
     dislikes: 0,
     usersLiked: [],
     usersDisliked: []
   });
-  sauce.save()
+  sauce.save()//Sauvegarde la nouvelle sauce dans la bdd
   .then(() => res.status(201).json({ message: 'Sauce enregistrée !' }))
   .catch(error => res.status(400).json({ error }));
 };
 
+//Modifier les infos d'une sauce
 exports.modifySauce = (req, res, next) => {
   if (req.file) {
     Sauce.findOne({_id: req.params.id})
@@ -40,6 +42,7 @@ Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
   .catch(error => res.status(404).json({ error }));
 }
 
+//Supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id})
     .then(sauce => {
@@ -53,6 +56,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 }
 
+//Voter pour une sauce
 exports.voteSauce = (req, res, next) => {
   const like = req.body.like;
   const user = req.body.userId;
@@ -100,12 +104,14 @@ exports.voteSauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(404).json({ error }));
 };
 
+//Récupérer toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then(sauces => res.status(200).json(sauces))
