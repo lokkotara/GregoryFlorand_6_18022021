@@ -6,10 +6,9 @@ const User =require('../models/User');
 const passwordValidator = require('password-validator');
 const schema = new passwordValidator();//On crée un schema pour obtenir des mots de passe plus sécurisés
 schema
-    .is().min(4)            //min 4 caractères
-    .is().max(20)           //max 20 caractères
-    .has().digits(1)        // min 1 chiffre
+    .is().min(8)            //min 8 caractères
     .has().not().spaces()   // ne doit pas contenir d'espace
+    .has().digits(1)        // min 1 chiffre
     .has().uppercase(1)     // min 1 caractère majuscule
     .has().lowercase(1)     // min 1 caractère minuscule
 
@@ -36,7 +35,7 @@ function mask(str, mask=true) {
 //Enregistre un nouvel utilisateur
 exports.signup = (req, res, next) => {
   if (!schema.validate(req.body.password)) {//Renvoie une erreur si le schema de mot de passe n'est pas respecté
-    res.status(401).json({ message: 'Mot de passe insuffisant' }); 
+    res.status(401).json({ message: 'Mot de passe pas assez sécurisé !' }); 
       return false;
   }
   bcrypt.hash(req.body.password, 10)//On hash le mot de passe et on le sale 10 fois

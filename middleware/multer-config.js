@@ -1,13 +1,13 @@
 const multer = require('multer');
 
-//Indique comment nous voulons écrire les types d'extension
+//Indique comment nous voulons écrire les types de médias
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png'
 };
 
-//Utilise une méthode de multer pour indiquer d'enregistrer les nouvelles images dans le dossier images
+//Utilise une méthode de multer pour enregistrer les nouvelles images dans le dossier images
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images')

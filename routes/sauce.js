@@ -1,15 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router();//Permet de charger le middleware niveau routeur
 
-const sauceCtrl = require('../controllers/sauce');
-const auth = require('../middleware/auth');
-const multer = require('../middleware/multer-config');
+const sauceCtrl = require('../controllers/sauce');//On appelle la logique métier de nos routes
+const auth = require('../middleware/auth');//On appelle le middleware d'authentification
+const multer = require('../middleware/multer-config');//et celui pour la gestion des images
 
-router.post('/', auth, multer, sauceCtrl.createSauce);
-router.put('/:id', auth, multer, sauceCtrl.modifySauce);
-router.delete('/:id', auth, sauceCtrl.deleteSauce);
-router.post('/:id/like', auth, sauceCtrl.voteSauce);
-router.get('/:id', auth, sauceCtrl.getOneSauce);
-router.get('/', auth, sauceCtrl.getAllSauces);
+router.post('/', auth, multer, sauceCtrl.createSauce);//Permet de créer une sauce
+router.put('/:id', auth, multer, sauceCtrl.modifySauce);//Permet de modifier une sauce existante
+router.delete('/:id', auth, sauceCtrl.deleteSauce);//Supprime une sauce
+router.post('/:id/like', auth, sauceCtrl.voteSauce);//Permet de voter pour une sauce
+router.get('/:id', auth, sauceCtrl.getOneSauce);//Récupère une seule sauce
+router.get('/', auth, sauceCtrl.getAllSauces);//Récupère toutes les sauces
 
 module.exports = router;
