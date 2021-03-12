@@ -4,7 +4,7 @@ const mongoose = require('mongoose');//Importe mongoose qui permet la création 
 const mongoSanitize = require('express-mongo-sanitize');//Sert à empêcher l'injection de code dans les champs utilisateurs
 const path = require('path');//Permet d'accéder aux chemins d'accès des fichiers
 const dotenv = require('dotenv').config();//Permet de créer un environnement de variables
-const Ddos = require('ddos');
+const Ddos = require('ddos');//Importe ddos pour limiter le nombre de requêtes et prévenir des attaques dos
 const ddos = new Ddos({burst:10, limit:15});
 
 const authenticationLimiter = require('./middleware/authenticationLimiter');
