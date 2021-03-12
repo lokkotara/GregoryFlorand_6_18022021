@@ -4,6 +4,8 @@ const mongoose = require('mongoose');//Importe mongoose qui permet la création 
 const mongoSanitize = require('express-mongo-sanitize');//Sert à empêcher l'injection de code dans les champs utilisateurs
 const path = require('path');//Permet d'accéder aux chemins d'accès des fichiers
 const dotenv = require('dotenv').config();//Permet de créer un environnement de variables
+const Ddos = require('ddos');
+const ddos = new Ddos({burst:10, limit:15});
 
 const authenticationLimiter = require('./middleware/authenticationLimiter');
 const sauceRoutes = require('./routes/sauce');//Importe le routeur pour les sauces
@@ -11,6 +13,7 @@ const userRoutes = require('./routes/user');//Importe le routeur pour les utilis
 
 const app = express();//Applique le framework express
 app.use(helmet());//Met en place les sous-plugins de helmet
+app.use(ddos.express);
 
 //Connecte l'API à la base de données mongoDB grâce à mongoose, en utilisant les identifiants stockés dans le fichier .env
 mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.uxdfw.mongodb.net/${process.env.DB_DATABASE}?retryWrites=true&w=majority`,
