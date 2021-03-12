@@ -7,6 +7,7 @@ const MIME_TYPES = {
   'image/png': 'png'
 };
 
+const maxSize = 1 * 1024 * 1024; //1MB et 1024 par 1024
 //Utilise une méthode de multer pour enregistrer les nouvelles images dans le dossier images
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -19,4 +20,5 @@ const storage = multer.diskStorage({
   }
 });
 
-module.exports = multer({ storage }).single('image');
+module.exports = multer({storage: storage, limits: { fileSize: maxSize }}).single('image');
+

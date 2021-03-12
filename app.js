@@ -5,6 +5,7 @@ const mongoSanitize = require('express-mongo-sanitize');//Sert à empêcher l'in
 const path = require('path');//Permet d'accéder aux chemins d'accès des fichiers
 const dotenv = require('dotenv').config();//Permet de créer un environnement de variables
 
+const authenticationLimiter = require('./middleware/authenticationLimiter');
 const sauceRoutes = require('./routes/sauce');//Importe le routeur pour les sauces
 const userRoutes = require('./routes/user');//Importe le routeur pour les utilisateurs
 
@@ -36,6 +37,6 @@ app.use(mongoSanitize())
 app.use('/images', express.static(path.join(__dirname, 'images')));//Permet de servir les fichiers statiques, présents dans le dossier images
 
 app.use('/api/sauces', sauceRoutes);//Sert les routes concernant les sauces pour toutes demande vers le endpoint /api/sauces
-app.use('/api/auth', userRoutes);//Sert les routes concernant les utilisateurs pour toutes demande vers le endpoint /api/auth
+app.use('/api/auth',authenticationLimiter, userRoutes);//Sert les routes concernant les utilisateurs pour toutes demande vers le endpoint /api/auth
 
 module.exports = app;
