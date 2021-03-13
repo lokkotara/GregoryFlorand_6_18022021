@@ -5,7 +5,7 @@ const mongoSanitize = require('express-mongo-sanitize');//Sert à empêcher l'in
 const path = require('path');//Permet d'accéder aux chemins d'accès des fichiers
 const dotenv = require('dotenv').config();//Permet de créer un environnement de variables
 const Ddos = require('ddos');//Importe ddos pour limiter le nombre de requêtes et prévenir des attaques dos
-const ddos = new Ddos({burst:10, limit:15});
+const ddos = new Ddos({burst:10, limit:15, testmode:false});
 
 const authenticationLimiter = require('./middleware/authenticationLimiter');
 const sauceRoutes = require('./routes/sauce');//Importe le routeur pour les sauces
